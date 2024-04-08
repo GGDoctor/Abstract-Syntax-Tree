@@ -8,7 +8,7 @@ SRCS = IgnoreComments.cpp Tokenization.cpp RecursiveDescentParser.cpp symboltabl
 OBJS = $(SRCS:.cpp=.o)
 
 # Executable file
-MAIN = symboltable
+MAIN = AbstactSyntaxTree
 
 # Build rule for the executable
 $(MAIN): $(OBJS)
