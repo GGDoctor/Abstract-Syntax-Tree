@@ -8,6 +8,7 @@
 #include "Tokenization.hpp"
 #include "RecursiveDescentParser.hpp"
 #include "symboltable.hpp"
+#include "abstractsyntaxtree.hpp"
 #include <iostream>
 #include <sstream>
 
