@@ -51,5 +51,8 @@ int main(int argc, char *argv[]) {
     SymbolTable symbolTable(recursiveDescentParser);
     cout << symbolTable;
 
+
+    
+
     return 0;
 }
