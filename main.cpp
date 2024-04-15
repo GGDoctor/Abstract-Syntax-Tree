@@ -49,9 +49,10 @@ int main(int argc, char *argv[]) {
     ss2 << recursiveDescentParser;
     */
     SymbolTable symbolTable(recursiveDescentParser);
-    cout << symbolTable;
+    // cout << symbolTable;
 
-
+    AbstractSyntaxTree abstractSyntaxTree(recursiveDescentParser);
+    cout << abstractSyntaxTree;
     
 
     return 0;

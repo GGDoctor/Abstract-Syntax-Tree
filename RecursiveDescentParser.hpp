@@ -73,6 +73,7 @@ private:
      * @brief So RecursiveDescentParser can access LCRS private variables 
      */
     friend class RecursiveDescentParser;
+    friend class AbstractSyntaxTree;
     friend class SymbolTable;
 };
 
