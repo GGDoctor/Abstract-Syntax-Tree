@@ -9,6 +9,7 @@
 #include "RecursiveDescentParser.hpp"
 #include "symboltable.hpp"
 #include "abstractsyntaxtree.hpp"
+#include "infixtopostfix.cpp"
 #include <iostream>
 #include <sstream>
 
