@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
     // cout << symbolTable;
 
     AbstractSyntaxTree abstractSyntaxTree(recursiveDescentParser);
-    cout << abstractSyntaxTree;
+    //cout << abstractSyntaxTree;
     
 
     return 0;
