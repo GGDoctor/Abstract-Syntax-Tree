@@ -189,6 +189,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
     LCRS *ast = nullptr; // new LCRS(result[0]);
     LCRS *temp = ast;
 
+
     vector<vector<Token>> abstract;
 
     for (int i = 0; i < result.size(); i++)
@@ -208,24 +209,25 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
 
 
+            /*
             // Check if the current token is "if" and the next token is also "if"
+            if (result[i][j].character == "If" && j + 1 < result[i].size() && result[i][j + 1].character == "if")
+            {
+                continue;
+            }
+            */
 
-            // if statement
+            //if statement
             if (result[i][0].character == "if")
             {
                 //token.character = "IF";
-                token.type = result[i][0].type;
-                token.lineNumber = result[i][0].lineNumber;
+                //token.type = result[i][0].type;
+                //token.lineNumber = result[i][0].lineNumber;
                 //k.push_back(token);
 
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)
                 {
-                    if (result[i][j].character == "IF" && j + 1 < result[i].size() && result[i][j + 1].character == "if")
-                    {
-                        continue;
-                    }
-
                     k.push_back(postfix[r]);
                 }
 
@@ -246,14 +248,6 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
-            //remove semicolon
-            if (result[i][0].character == ";")
-            {
-                result[i][0].character = "Semicolon";
-                k.pop_back();
-                break;
-            }
-
             if (result[i][1].character == "=")
             {
                 token.character = "Assignment";
@@ -270,20 +264,22 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             }
 
             // new semicolon work
-         //   if (result[i][1].character == ";")
-          //  {
-              //  token.character = "Semicolon";
-              //  token.type = result[i][0].type;
-              //  token.lineNumber = result[i][0].lineNumber;
-              //  k.push_back(token);
+            if (result[i][result[i].size() - 1].character == ";")
+            {
+                /*
+                token.character = "Semicolon";
+                token.type = result[i][0].type;
+                token.lineNumber = result[i][0].lineNumber;
+                k.push_back(token);
+                */
 
-            //    vector<Token> postfix = infixToPostfix(result[i]);
-            //    for (int r = 0; r < postfix.size(); r++)
-            //    {
-            //        k.push_back(postfix[r]);
-          //      }
-            //    break;
-        //    }
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    k.push_back(postfix[r]);
+                }
+                break;
+            }
 
             // print statement
             if (result[i][1].character == "printf")

@@ -104,10 +104,7 @@ private:
                 }
                 operators.push(token);
             }
-             else if (token.character == ";")
-            {
-                postfix.pop_back();
-            }
+    
             else if (token.character == "(")
             {
                 operators.push(token);
