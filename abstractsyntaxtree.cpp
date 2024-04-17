@@ -189,35 +189,6 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
     LCRS *ast = nullptr; // new LCRS(result[0]);
     LCRS *temp = ast;
 
-    /*
-    for (int i = 0; i < result.size(); i++) {
-        AbstractStateDFA state = isDeclarationKeyword(result[i][0].character);
-        Token token;
-
-        switch (state) {
-            case ABSTRACT_DECLARATION:
-                token.character = "declaration";
-                token.type = result[i][0].type;
-                token.lineNumber = result[i][0].lineNumber;
-                temp->leftChild = new LCRS(token);
-                temp = temp->leftChild;
-                break;
-
-            case ABSTRACT_OTHER_STATE:
-                for (int j = 0; j < result[i].size(); j++) {
-                    temp->rightSibling = new LCRS(result[i][j]);
-                    temp = temp->rightSibling;
-                }
-
-                temp = temp->leftChild;
-                break;
-        }
-
-        for (int j = 0; j < result[i].size(); j++) {
-
-        }
-    }
-    */
 
     vector<vector<Token>> abstract;
 
@@ -236,6 +207,14 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
+
+
+            // Check if the current token is "if" and the next token is also "if"
+            if (result[i][j].character == "If" && j + 1 < result[i].size() && result[i][j + 1].character == "if")
+            {
+                continue;
+            }
+            
             //if statement
             if (result[i][0].character == "if")
             {
