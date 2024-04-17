@@ -93,7 +93,7 @@ private:
                 postfix.push_back(token);
             }
             else if (token.type == PLUS || token.type == MINUS || token.type == DIVIDE ||
-                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT)
+                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT || token.type == GT_EQUAL || token.type == LT_EQUAL)
             {
                 while (!operators.empty() &&
                        precedence(token) <= precedence(operators.top()) &&

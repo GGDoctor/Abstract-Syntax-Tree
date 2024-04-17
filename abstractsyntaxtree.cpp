@@ -214,11 +214,11 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             {
                 continue;
             }
-            
+
             //if statement
             if (result[i][0].character == "if")
             {
-                token.character = "If";
+                token.character = "IF";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
@@ -226,7 +226,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)
                 {
-                    k.push_back(postfix[r]);
+                    k.push_back(postfix[r+1]);
                 }
 
                 break;
