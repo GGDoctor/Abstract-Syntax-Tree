@@ -237,12 +237,19 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             }
 
             //if statement
-            if (isDeclarationKeyword(result[i][0].character))
+            if (result[i][0].character == "if")
             {
                 token.character = "If";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
+
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    k.push_back(postfix[r]);
+                }
+
                 break;
             }
 
@@ -294,6 +301,17 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             // print statement
             if (result[i][1].character == "printf")
             {
+                token.character = "PrintF";
+                token.type = result[i][0].type;
+                token.lineNumber = result[i][0].lineNumber;
+                k.push_back(token);
+
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    k.push_back(postfix[r]);
+                }
+                break;
             }
 
             token.character = result[i][j].character;
