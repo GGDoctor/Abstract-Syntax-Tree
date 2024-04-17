@@ -219,7 +219,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
         for (int j = 0; j < result[i].size(); j++) {
             Token token;
             if (isDeclarationKeyword(result[i][0].character)) {
-                token.character = "declaration";
+                token.character = "Declaration";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
@@ -227,19 +227,19 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             }
 
             if (result[i][0].character == "{") {
-                result[i][0].character = "begin block";
+                result[i][0].character = "Begin Block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][0].character == "}") {
-                result[i][0].character = "end block";
+                result[i][0].character = "End Block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][1].character == "=") {
-                token.character = "assignment";
+                token.character = "Assignment";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
