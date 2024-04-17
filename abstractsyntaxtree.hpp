@@ -54,7 +54,7 @@ private:
     bool isDeclarationKeyword(const string &tokenCharacter)
     {
         return (tokenCharacter == "function" || tokenCharacter == "procedure" ||
-                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool" || tokenCharacter=="If");
+                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool" || tokenCharacter == "If");
     }
 
     int precedence(const Token &token)
@@ -66,9 +66,15 @@ private:
         if (token.character == "^")
             return 3;
 
-        if (token.character == ">=")
+        if (token.character == "<=")
             return 4;
-            
+
+        if (token.character == ">=")
+            return 5;
+
+        if (token.character == "&&")
+            return 6;
+
         return 0;
     }
 
@@ -104,7 +110,7 @@ private:
                 }
                 operators.push(token);
             }
-    
+
             else if (token.character == "(")
             {
                 operators.push(token);
