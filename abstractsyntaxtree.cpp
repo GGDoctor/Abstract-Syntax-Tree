@@ -136,7 +136,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(const vector<Token> &tokens)
  * @param concreteSyntaxTree - The concrete syntax tree that was generated in
  *                                                      RecursiveDescentParser
  */
-AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree)
+AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree, SymbolTable symbolTable)
 {
     LCRS *cst = concreteSyntaxTree.getConcreteSyntaxTree();
 
@@ -200,10 +200,30 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             Token token;
             if (isDeclarationKeyword(result[i][0].character))
             {
-                token.character = "Declaration";
+                int numDeclarations = 1;
+                if (result[i][0].character == "int" || 
+                    result[i][0].character == "char" ||
+                    result[i][0].character == "bool") {
+                    for (int j = 1; j < result[i].size(); j++) {
+                        if (result[i][j].character == ",")
+                            numDeclarations++;
+                    }
+                }
+
+                token.character = "declaration";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
-                k.push_back(token);
+
+                if (numDeclarations > 1) {
+                    for (int j = 1; j < numDeclarations; j++) {
+                        k.push_back(token);
+                        abstract.push_back(k);
+                    }
+                } else {
+                    k.push_back(token);
+                }
+                
+                
                 break;
             }
 
@@ -236,25 +256,51 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
             if (result[i][0].character == "{")
             {
-                result[i][0].character = "Begin Block";
+                result[i][0].character = "begin block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][0].character == "}")
             {
-                result[i][0].character = "End Block";
+                result[i][0].character = "end block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][1].character == "=")
             {
-                token.character = "Assignment";
+                token.character = "assignment";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
 
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    k.push_back(postfix[r]);
+                }
+
+                int foundFunctionProcedureCall = findFunctionProcedureCall(result[i], symbolTable.table);
+                // found function/procedure call in line
+                if (foundFunctionProcedureCall != -1) {
+                    int numberOfParams = findNumberOfParams(
+                        result[i][foundFunctionProcedureCall].character, symbolTable.paramTable);
+                    //cout << "num params: " << numberOfParams << '\n';
+                    token.character = "(";
+                    token.type = LEFT_PARENTHESIS;
+                    k.insert(k.begin() + foundFunctionProcedureCall + 1, token);
+                    token.character = ")";
+                    token.type = RIGHT_PARENTHESIS;
+                    k.insert(k.begin() + foundFunctionProcedureCall + 2 + numberOfParams, token);
+                }
+
+                break;
+            }
+
+            // print statement
+            if (result[i][0].character == "printf")
+            {
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)
                 {
@@ -272,22 +318,6 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
                 */
-
-                vector<Token> postfix = infixToPostfix(result[i]);
-                for (int r = 0; r < postfix.size(); r++)
-                {
-                    k.push_back(postfix[r]);
-                }
-                break;
-            }
-
-            // print statement
-            if (result[i][1].character == "printf")
-            {
-                token.character = "PrintF";
-                token.type = result[i][0].type;
-                token.lineNumber = result[i][0].lineNumber;
-                k.push_back(token);
 
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)

@@ -6,6 +6,7 @@
 #include <list>
 #include <stack>
 #include "Tokenization.hpp" // Include the header where Token is defined
+#include "symboltable.hpp"
 #include "RecursiveDescentParser.hpp"
 
 using namespace std;
@@ -29,7 +30,7 @@ public:
      * @param concreteSyntaxTree - The concrete syntax tree that was generated in
      *                                                      RecursiveDescentParser
      */
-    AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree);
+    AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree, SymbolTable symbolTable);
 
     /**
      * @brief Constructor
@@ -54,7 +55,7 @@ private:
     bool isDeclarationKeyword(const string &tokenCharacter)
     {
         return (tokenCharacter == "function" || tokenCharacter == "procedure" ||
-                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool" || tokenCharacter == "If");
+                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool");
     }
 
     int precedence(const Token &token)
@@ -90,11 +91,8 @@ private:
 
         for (const Token &token : infix)
         {
-            if (token.type == INTEGER)
-            {
-                postfix.push_back(token);
-            }
-            else if (token.type == IDENTIFIER)
+            if (token.type == INTEGER || token.type == IDENTIFIER || 
+                token.type == STRING)
             {
                 postfix.push_back(token);
             }
@@ -134,6 +132,33 @@ private:
 
         return postfix;
     }
+
+    // finds if a line contains a function/procedure call from symbol table
+    // returns -1 if no function/procedure call found in line, otherwise 
+    // returns the index of function/procedure call was
+    int findFunctionProcedureCall(const vector<Token>& line, const list<TableEntry>& symbolTable) {
+        for (int i = 0; i < line.size(); i++) { 
+            for (const auto& symbol : symbolTable) {
+                if (symbol.identifierName == line[i].character && 
+                   (symbol.identifierType == "function" || symbol.identifierType == "procedure")) {
+                    //cout << "Found: " << line[i].character << " at index " << i << endl;
+                    return i; // return index of function/procedure call
+                }
+            }
+        }
+        return -1;
+    }
+
+    int findNumberOfParams(const string& functionName, const list<ParamListEntry>& paramTable) {
+        int numberOfParams = 0;
+        for (const auto& param : paramTable) {
+            if (functionName == param.paramListName) {
+                numberOfParams++;
+            }
+        }
+        return numberOfParams;
+    }
+
 };
 
 #endif /* ABSTRACT_SYNTAX_TREE_HPP */

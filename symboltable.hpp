@@ -64,6 +64,8 @@ private:
                                                                 paramListName);
     list<TableEntry> table;
     list<ParamListEntry> paramTable;
+    
+    friend class AbstractSyntaxTree;
 };
 
 #endif /* SYMBOLTABLE_HPP */
