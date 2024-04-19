@@ -66,22 +66,20 @@ private:
             return 2;
         if (token.character == "^")
             return 3;
-
-        if (token.character == "<=")
-            return 4;
-
-        if (token.character == ">=")
-            return 5;
-
+        if (token.character == "==" || token.character == "!=" || 
+            token.character == "<=" || token.character == ">=")
+            return 4; 
         if (token.character == "&&")
-            return 6;
+            return 5; 
+        if (token.character == "||")
+            return 6; 
 
         return 0;
     }
 
     bool isLeftAssociative(const Token &token)
     {
-        return token.character != "^";
+        return !(token.character == "^" || token.character == "&&");
     }
 
     vector<Token> infixToPostfix(const vector<Token> &infix)
@@ -92,12 +90,17 @@ private:
         for (const Token &token : infix)
         {
             if (token.type == INTEGER || token.type == IDENTIFIER || 
-                token.type == STRING)
+                token.type == STRING || token.type == SINGLE_QUOTE || 
+                token.type == LEFT_BRACKET || token.type == RIGHT_BRACKET
+                || token.type == DOUBLE_QUOTE)
             {
                 postfix.push_back(token);
             }
             else if (token.type == PLUS || token.type == MINUS || token.type == DIVIDE ||
-                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT || token.type == GT_EQUAL || token.type == LT_EQUAL)
+                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT 
+                     || token.type == GT_EQUAL || token.type == LT_EQUAL || 
+                     token.type == BOOLEAN_AND_OPERATOR || token.type == BOOLEAN_EQUAL ||
+                     token.type == BOOLEAN_OR_OPERATOR)
             {
                 while (!operators.empty() &&
                        precedence(token) <= precedence(operators.top()) &&
