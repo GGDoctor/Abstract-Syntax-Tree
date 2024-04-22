@@ -318,14 +318,17 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
             // print statement
             if (result[i][0].character == "printf")
-            {
-                vector<Token> postfix = infixToPostfix(result[i]);
-                for (int r = 0; r < postfix.size(); r++)
-                {
-                    k.push_back(postfix[r]);
-                }
-                break;
-            }
+{
+    vector<Token> postfix = infixToPostfix(result[i]);
+    for (int r = 0; r < postfix.size(); r++)
+    {
+        if (postfix[r].character != "\"") { // Skip double quotes
+            k.push_back(postfix[r]);
+        }
+    }
+    break;
+}
+
 
             // new semicolon work
             if (result[i][result[i].size() - 1].character == ";")
