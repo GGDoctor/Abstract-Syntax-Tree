@@ -254,6 +254,24 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
+
+            //just placing this in to start while condition
+            if (result[i][0].character == "while")
+            {
+                //token.character = "IF";
+                //token.type = result[i][0].type;
+                //token.lineNumber = result[i][0].lineNumber;
+                //k.push_back(token);
+
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    k.push_back(postfix[r]);
+                }
+
+                break;
+            }
+
             if (result[i][0].character == "{")
             {
                 result[i][0].character = "begin block";
