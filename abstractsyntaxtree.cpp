@@ -221,7 +221,9 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                     k.push_back(declarationToken);
                     abstract.push_back(k); // Push the declaration once
 
-                    for (int j = 1; j < numDeclarations; j++)
+
+                    //Changed from numDeclarations to -1 to get rid of last 2 declarations
+                    for (int j = 1; j < numDeclarations - 1; j++)
                     {
                         vector<Token> additionalDeclaration;
                         additionalDeclaration.push_back(declarationToken);
