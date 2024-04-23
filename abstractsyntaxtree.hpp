@@ -66,13 +66,13 @@ private:
             return 2;
         if (token.character == "^")
             return 3;
-        if (token.character == "==" || token.character == "!=" || 
+        if (token.character == "==" || token.character == "!=" ||
             token.character == "<=" || token.character == ">=")
-            return 4; 
+            return 4;
         if (token.character == "&&")
-            return 5; 
+            return 5;
         if (token.character == "||")
-            return 6; 
+            return 6;
 
         return 0;
     }
@@ -89,16 +89,14 @@ private:
 
         for (const Token &token : infix)
         {
-            if (token.type == INTEGER || token.type == IDENTIFIER || 
-                token.type == STRING || token.type == SINGLE_QUOTE || 
-                token.type == LEFT_BRACKET || token.type == RIGHT_BRACKET
-                || token.type == DOUBLE_QUOTE)
+            if (token.type == INTEGER || token.type == IDENTIFIER ||
+                token.type == STRING || token.type == SINGLE_QUOTE ||
+                token.type == LEFT_BRACKET || token.type == RIGHT_BRACKET || token.type == DOUBLE_QUOTE)
             {
                 postfix.push_back(token);
             }
             else if (token.type == PLUS || token.type == MINUS || token.type == DIVIDE ||
-                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT 
-                     || token.type == GT_EQUAL || token.type == LT_EQUAL || 
+                     token.type == ASTERISK || token.type == MODULO || token.type == ASSIGNMENT || token.type == GT_EQUAL || token.type == LT_EQUAL ||
                      token.type == BOOLEAN_AND_OPERATOR || token.type == BOOLEAN_EQUAL ||
                      token.type == BOOLEAN_OR_OPERATOR)
             {
@@ -111,17 +109,29 @@ private:
                 }
                 operators.push(token);
             }
-        else if (token.character == ">") // Handle '>' operator
-        {
-            while (!operators.empty() && operators.top().character != "(" &&
-                   precedence(token) <= precedence(operators.top()) &&
-                   isLeftAssociative(token))
+            else if (token.character == ">") // Handle '>' operator
             {
-                postfix.push_back(operators.top());
-                operators.pop();
+                while (!operators.empty() && operators.top().character != "(" &&
+                       precedence(token) <= precedence(operators.top()) &&
+                       isLeftAssociative(token))
+                {
+                    postfix.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.push(token);
             }
-            operators.push(token);
-        }
+            else if (token.character == "<") // Handle '<' operator
+            {
+                while (!operators.empty() && operators.top().character != "(" &&
+                       precedence(token) <= precedence(operators.top()) &&
+                       isLeftAssociative(token))
+                {
+                    postfix.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.push(token);
+            }
+
             else if (token.character == "(")
             {
                 operators.push(token);
@@ -147,14 +157,18 @@ private:
     }
 
     // finds if a line contains a function/procedure call from symbol table
-    // returns -1 if no function/procedure call found in line, otherwise 
+    // returns -1 if no function/procedure call found in line, otherwise
     // returns the index of function/procedure call was
-    int findFunctionProcedureCall(const vector<Token>& line, const list<TableEntry>& symbolTable) {
-        for (int i = 0; i < line.size(); i++) { 
-            for (const auto& symbol : symbolTable) {
-                if (symbol.identifierName == line[i].character && 
-                   (symbol.identifierType == "function" || symbol.identifierType == "procedure")) {
-                    //cout << "Found: " << line[i].character << " at index " << i << endl;
+    int findFunctionProcedureCall(const vector<Token> &line, const list<TableEntry> &symbolTable)
+    {
+        for (int i = 0; i < line.size(); i++)
+        {
+            for (const auto &symbol : symbolTable)
+            {
+                if (symbol.identifierName == line[i].character &&
+                    (symbol.identifierType == "function" || symbol.identifierType == "procedure"))
+                {
+                    // cout << "Found: " << line[i].character << " at index " << i << endl;
                     return i; // return index of function/procedure call
                 }
             }
@@ -162,16 +176,18 @@ private:
         return -1;
     }
 
-    int findNumberOfParams(const string& functionName, const list<ParamListEntry>& paramTable) {
+    int findNumberOfParams(const string &functionName, const list<ParamListEntry> &paramTable)
+    {
         int numberOfParams = 0;
-        for (const auto& param : paramTable) {
-            if (functionName == param.paramListName) {
+        for (const auto &param : paramTable)
+        {
+            if (functionName == param.paramListName)
+            {
                 numberOfParams++;
             }
         }
         return numberOfParams;
     }
-
 };
 
 #endif /* ABSTRACT_SYNTAX_TREE_HPP */
