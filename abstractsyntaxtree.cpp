@@ -212,7 +212,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                     }
                 }
                 Token declarationToken;
-                declarationToken.character = "declaration";
+                declarationToken.character = "Declaration";
                 declarationToken.type = result[i][0].type;
                 declarationToken.lineNumber = result[i][0].lineNumber;
 
@@ -296,21 +296,21 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
             if (result[i][0].character == "{")
             {
-                result[i][0].character = "begin block";
+                result[i][0].character = "Begin Block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][0].character == "}")
             {
-                result[i][0].character = "end block";
+                result[i][0].character = "End Block";
                 k.push_back(result[i][0]);
                 break;
             }
 
             if (result[i][1].character == "=")
             {
-                token.character = "assignment";
+                token.character = "Assignment";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
                 k.push_back(token);
