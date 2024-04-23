@@ -132,6 +132,18 @@ private:
                 operators.push(token);
             }
 
+            else if (token.character == "!") // Handle '>' operator
+            {
+                while (!operators.empty() && operators.top().character != "(" &&
+                       precedence(token) <= precedence(operators.top()) &&
+                       isLeftAssociative(token))
+                {
+                    postfix.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.push(token);
+            }
+
             else if (token.character == "(")
             {
                 operators.push(token);

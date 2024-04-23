@@ -189,45 +189,66 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
     LCRS *ast = nullptr; // new LCRS(result[0]);
     LCRS *temp = ast;
 
-
     vector<vector<Token>> abstract;
 
     for (int i = 0; i < result.size(); i++)
     {
         vector<Token> k;
+        bool isDeclaration = false;
         for (int j = 0; j < result[i].size(); j++)
         {
             Token token;
             if (isDeclarationKeyword(result[i][0].character))
             {
                 int numDeclarations = 1;
-                if (result[i][0].character == "int" || 
+                if (result[i][0].character == "int" ||
                     result[i][0].character == "char" ||
-                    result[i][0].character == "bool") {
-                    for (int j = 1; j < result[i].size(); j++) {
+                    result[i][0].character == "bool")
+                {
+                    for (int j = 1; j < result[i].size(); j++)
+                    {
                         if (result[i][j].character == ",")
                             numDeclarations++;
                     }
                 }
+                Token declarationToken;
+                declarationToken.character = "declaration";
+                declarationToken.type = result[i][0].type;
+                declarationToken.lineNumber = result[i][0].lineNumber;
 
-                token.character = "declaration";
-                token.type = result[i][0].type;
-                token.lineNumber = result[i][0].lineNumber;
+                if (numDeclarations > 1)
+                {
+                    k.push_back(declarationToken);
+                    abstract.push_back(k); // Push the declaration once
 
-                if (numDeclarations > 1) {
-                    for (int j = 1; j < numDeclarations; j++) {
+                    for (int j = 1; j < numDeclarations; j++)
+                    {
+                        vector<Token> additionalDeclaration;
+                        additionalDeclaration.push_back(declarationToken);
+                        abstract.push_back(additionalDeclaration); // Push additional declarations
+                    }
+                }
+                else
+                {
+                    k.push_back(declarationToken);
+                  // abstract.push_back(k);
+                }
+                /*
+                if (numDeclarations > 1)
+                {
+                    for (int j = 1; j < numDeclarations; j++)
+                    {
                         k.push_back(token);
                         abstract.push_back(k);
                     }
-                } else {
-                    k.push_back(token);
                 }
-                
-                
+                else
+                {
+                    k.push_back(token);
+                }*/
+
                 break;
             }
-
-
 
             /*
             // Check if the current token is "if" and the next token is also "if"
@@ -237,13 +258,13 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             }
             */
 
-            //if statement
+            // if statement
             if (result[i][0].character == "if")
             {
-                //token.character = "IF";
-                //token.type = result[i][0].type;
-                //token.lineNumber = result[i][0].lineNumber;
-                //k.push_back(token);
+                // token.character = "IF";
+                // token.type = result[i][0].type;
+                // token.lineNumber = result[i][0].lineNumber;
+                // k.push_back(token);
 
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)
@@ -254,14 +275,13 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
-
-            //just placing this in to start while condition
+            // just placing this in to start while condition
             if (result[i][0].character == "while")
             {
-                //token.character = "IF";
-                //token.type = result[i][0].type;
-                //token.lineNumber = result[i][0].lineNumber;
-                //k.push_back(token);
+                // token.character = "IF";
+                // token.type = result[i][0].type;
+                // token.lineNumber = result[i][0].lineNumber;
+                // k.push_back(token);
 
                 vector<Token> postfix = infixToPostfix(result[i]);
                 for (int r = 0; r < postfix.size(); r++)
@@ -301,10 +321,11 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
                 int foundFunctionProcedureCall = findFunctionProcedureCall(result[i], symbolTable.table);
                 // found function/procedure call in line
-                if (foundFunctionProcedureCall != -1) {
+                if (foundFunctionProcedureCall != -1)
+                {
                     int numberOfParams = findNumberOfParams(
                         result[i][foundFunctionProcedureCall].character, symbolTable.paramTable);
-                    //cout << "num params: " << numberOfParams << '\n';
+                    // cout << "num params: " << numberOfParams << '\n';
                     token.character = "(";
                     token.type = LEFT_PARENTHESIS;
                     k.insert(k.begin() + foundFunctionProcedureCall + 1, token);
@@ -318,17 +339,17 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
             // print statement
             if (result[i][0].character == "printf")
-{
-    vector<Token> postfix = infixToPostfix(result[i]);
-    for (int r = 0; r < postfix.size(); r++)
-    {
-        if (postfix[r].character != "\"") { // Skip double quotes
-            k.push_back(postfix[r]);
-        }
-    }
-    break;
-}
-
+            {
+                vector<Token> postfix = infixToPostfix(result[i]);
+                for (int r = 0; r < postfix.size(); r++)
+                {
+                    if (postfix[r].character != "\"")
+                    { // Skip double quotes
+                        k.push_back(postfix[r]);
+                    }
+                }
+                break;
+            }
 
             // new semicolon work
             if (result[i][result[i].size() - 1].character == ";")
