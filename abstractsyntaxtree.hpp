@@ -52,6 +52,9 @@ public:
 private:
     LCRS *abstractSyntaxTree;
 
+    vector<string>listOfProFuncs;
+
+
     bool isDeclarationKeyword(const string &tokenCharacter)
     {
         return (tokenCharacter == "function" || tokenCharacter == "procedure" ||
@@ -180,11 +183,19 @@ private:
                 if (symbol.identifierName == line[i].character &&
                     (symbol.identifierType == "function" || symbol.identifierType == "procedure"))
                 {
-                    // cout << "Found: " << line[i].character << " at index " << i << endl;
+                     //creates a list of function and procedure names
+                     if(!count(listOfProFuncs.begin(), listOfProFuncs.end(), line[i].character)){
+                        listOfProFuncs.push_back(line[i].character);
+                     }
+                     //cout << "Found: " << line[i].character << " at index " << i << endl;
+                     
                     return i; // return index of function/procedure call
                 }
             }
         }
+        // for(int i = 0; i < listOfProFuncs.size(); i++){
+        //     cout << listOfProFuncs[i] << endl;
+        // }
         return -1;
     }
 

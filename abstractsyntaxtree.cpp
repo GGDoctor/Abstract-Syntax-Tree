@@ -186,6 +186,19 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
     }
     */
 
+   //vector<Token>listOfProFuncs;
+
+    for(int line = 0; line < result.size(); line++){
+        if(findFunctionProcedureCall(result[line], symbolTable.table) != -1){
+            //listOfProFuncs.push_back(result[line][1]);
+            //cout << findFunctionProcedureCall(result[line], symbolTable.table) << endl;
+            //cout << "Possible name: " << result[line][1].character << " on line " << line << endl;
+        }
+        
+    }
+
+
+
     LCRS *ast = nullptr; // new LCRS(result[0]);
     LCRS *temp = ast;
 
@@ -319,7 +332,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                         if(result[i][r].character != "\n"){
                         abstract.push_back(k);
                         
-                        cout << abstract.size() << endl;
+                    
                         k.clear();
                         proxyVector.clear();
                         count++;
@@ -433,8 +446,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
         }
         abstract.push_back(k);
     }
-    cout << "Abstract: " << abstract.size() << endl;
-
+    
     for (auto i : abstract)
     {
         for (auto j : i)
