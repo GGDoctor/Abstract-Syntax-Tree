@@ -376,8 +376,9 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
-            if (result[i][1].character == "=")
+            if (result[i][1].character == "=" || result[i][4].character == "=")
             {
+                
                 token.character = "Assignment";
                 token.type = result[i][0].type;
                 token.lineNumber = result[i][0].lineNumber;
