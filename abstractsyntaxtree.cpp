@@ -315,7 +315,10 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                             for (int o = 0; o < postfix.size(); o++)
                             {
                                 k.push_back(postfix[o]);
+                                
                             }
+                            abstract.push_back(k);
+                            k.clear();
                             first_Semi = false;
                             second_Semi = true;
                         }
@@ -331,9 +334,28 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                             for (int o = 0; o < postfix.size(); o++)
                             {
                                 k.push_back(postfix[o]);
+                                
                             }
+                            abstract.push_back(k);
+                            k.clear();
                             second_Semi = false;
                             third_Semi = true;
+                        }
+                    }
+                    else {
+                        thirdColon.push_back(result[i][r]);
+                        //if (result[i][r].character == "i++"){
+                        cout << result[i][r].character << endl;    
+                        postfix = infixToPostfix(thirdColon);
+                        if (result[i][r].character == ")"){
+                        for (int o = 0; o < postfix.size(); o++)
+                        {
+                            //cout << postfix[o].character << endl;
+                            k.push_back(postfix[o]);
+                        }
+                        
+                        //third_Semi = false;
+                        
                         }
                     }
                 }
