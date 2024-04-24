@@ -177,6 +177,9 @@ State getStateDFA(Token token) {
         if (token.character == "if")
             return CONDITIONAL;
 
+        if (token.character == "call")
+            return FUNCTION_DECLARATION;
+
         if (token.character == "for" || token.character == "while")
             return LOOP;
 
