@@ -211,6 +211,25 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
         for (int j = 0; j < result[i].size(); j++)
         {
             Token token;
+            //finds Procedure calls
+            if (find(listOfProFuncs.begin(), listOfProFuncs.end(), result[i][0].character) != listOfProFuncs.end()){
+                //cout << "Found " << result[i][0].character << endl;
+                Token callToken;
+                callToken.character = "Call";
+                callToken.lineNumber = result[i][0].lineNumber;
+                callToken.type = result[i][0].type;
+                //result[i][0].character = "Call";
+                //cout << "test1" << endl;
+                vector<Token> postfix = infixToPostfix(result[i]);
+                k.push_back(callToken);
+                //cout << "test2" << endl;
+                for (int index = 0; index < postfix.size(); index++){
+                     k.push_back(postfix[index]);
+                }
+                //cout << "test3" << endl;
+                break;
+            }
+
             if (isDeclarationKeyword(result[i][0].character))
             {
                 int numDeclarations = 1;

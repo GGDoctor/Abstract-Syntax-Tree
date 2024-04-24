@@ -58,7 +58,7 @@ private:
     bool isDeclarationKeyword(const string &tokenCharacter)
     {
         return (tokenCharacter == "function" || tokenCharacter == "procedure" ||
-                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool");
+                tokenCharacter == "int" || tokenCharacter == "char" || tokenCharacter == "bool" );
     }
 
     int precedence(const Token &token)
