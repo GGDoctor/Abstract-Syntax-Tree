@@ -120,7 +120,9 @@ auto toTokenType(Token token) {
 
         case BOOLEAN_FALSE:
             return "BOOLEAN_FALSE";
-
+        
+        default:
+            return "NONEXISTENT";
     }
 }
 

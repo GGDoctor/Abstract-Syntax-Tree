@@ -56,6 +56,7 @@ enum TokenType {
     BOOLEAN_NOT_EQUAL,
     BOOLEAN_TRUE,
     BOOLEAN_FALSE,
+    NONEXISTENT,
 };
 
 /**

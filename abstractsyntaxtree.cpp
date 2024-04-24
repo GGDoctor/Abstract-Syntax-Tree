@@ -279,83 +279,52 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
             if (result[i][0].character == "for")
             {
                 vector<Token> postfix;
-                vector<Token> firstColon;
-                vector<Token> secondColon;
-                vector<Token> thirdColon;
-                bool first_Semi = true;
-                bool second_Semi = false;
-                bool third_Semi = false;
+                vector<Token> proxyVector;
 
-                Token forToken_1;
-                forToken_1.character = "For Expression 1";
-                forToken_1.type = result[i][0].type;
-                firstColon.push_back(forToken_1);
+                int count = 1;
 
-                Token forToken_2;
-                forToken_2.character = "For Expression 2";
-                forToken_2.type = result[i][0].type;
-                secondColon.push_back(forToken_2);
+                Token proxyToken;
+                proxyToken.character = "For Expression " + to_string(count);
+                proxyToken.type = result[i][0].type;
+                proxyVector.push_back(proxyToken);
 
-                Token forToken_3;
-                forToken_3.character = "For Expression 3";
-                forToken_3.type = result[i][0].type;
-                thirdColon.push_back(forToken_3);
-
+                Token proxyTokenTwo;
+                proxyTokenTwo.character = "\n";
+                proxyTokenTwo.type = result[i][0].type;
+                
+                result[i].push_back(proxyTokenTwo);                
+                              
                 for (int r = 2; r < result[i].size(); r++)
                 {
 
-                    if (first_Semi)
+                    proxyVector.push_back(result[i][r]);
+
+                    if (result[i][r].character == ";" || result[i][r].character == "\n")
                     {
-                        firstColon.push_back(result[i][r]);
-
-                        if (result[i][r].character == ";")
-                        {
-                            postfix = infixToPostfix(firstColon);
-
-                            for (int o = 0; o < postfix.size(); o++)
-                            {
-                                k.push_back(postfix[o]);
-                                
-                            }
-                            abstract.push_back(k);
-                            k.clear();
-                            first_Semi = false;
-                            second_Semi = true;
+                        if(result[i][r].character == "\n"){
+                            
+                            proxyVector.pop_back();                          
+                            proxyVector.pop_back();
+                            
                         }
-                    }
-                    else if (second_Semi)
-                    {
-                        secondColon.push_back(result[i][r]);
-
-                        if (result[i][r].character == ";")
-                        {
-                            postfix = infixToPostfix(secondColon);
-
-                            for (int o = 0; o < postfix.size(); o++)
-                            {
-                                k.push_back(postfix[o]);
-                                
-                            }
-                            abstract.push_back(k);
-                            k.clear();
-                            second_Semi = false;
-                            third_Semi = true;
-                        }
-                    }
-                    else {
-                        thirdColon.push_back(result[i][r]);
-                        //if (result[i][r].character == "i++"){
-                        cout << result[i][r].character << endl;    
-                        postfix = infixToPostfix(thirdColon);
-                        if (result[i][r].character == ")"){
+                        postfix = infixToPostfix(proxyVector);
+                        
                         for (int o = 0; o < postfix.size(); o++)
                         {
-                            //cout << postfix[o].character << endl;
+                            
                             k.push_back(postfix[o]);
+                            
                         }
                         
-                        //third_Semi = false;
+                        if(result[i][r].character != "\n"){
+                        abstract.push_back(k);
                         
+                        cout << abstract.size() << endl;
+                        k.clear();
+                        proxyVector.clear();
+                        count++;
+                        proxyToken.character = "For Expression " + to_string(count);
+                        proxyVector.push_back(proxyToken);
                         }
                     }
                 }
@@ -464,6 +433,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
         }
         abstract.push_back(k);
     }
+    cout << "Abstract: " << abstract.size() << endl;
 
     for (auto i : abstract)
     {
