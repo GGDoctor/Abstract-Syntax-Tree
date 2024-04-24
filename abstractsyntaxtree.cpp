@@ -221,8 +221,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                     k.push_back(declarationToken);
                     abstract.push_back(k); // Push the declaration once
 
-
-                    //Changed from numDeclarations to -1 to get rid of last 2 declarations
+                    // Changed from numDeclarations to -1 to get rid of last 2 declarations
                     for (int j = 1; j < numDeclarations - 1; j++)
                     {
                         vector<Token> additionalDeclaration;
@@ -233,7 +232,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 else
                 {
                     k.push_back(declarationToken);
-                  // abstract.push_back(k);
+                    // abstract.push_back(k);
                 }
                 /*
                 if (numDeclarations > 1)
@@ -277,53 +276,68 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
-            if (result[i][0].character == "for"){
+            if (result[i][0].character == "for")
+            {
                 vector<Token> postfix;
-                vector<Token>firstColon;
-                vector<Token>secondColon;
+                vector<Token> firstColon;
+                vector<Token> secondColon;
                 vector<Token> thirdColon;
                 bool first_Semi = true;
                 bool second_Semi = false;
+                bool third_Semi = false;
 
                 Token forToken_1;
-                forToken_1.character="For Expression 1";
+                forToken_1.character = "For Expression 1";
                 forToken_1.type = result[i][0].type;
                 firstColon.push_back(forToken_1);
 
                 Token forToken_2;
-                forToken_2.character="For Expression 2";
+                forToken_2.character = "For Expression 2";
                 forToken_2.type = result[i][0].type;
                 secondColon.push_back(forToken_2);
 
                 Token forToken_3;
-                forToken_3.character="For Expression 3";
+                forToken_3.character = "For Expression 3";
                 forToken_3.type = result[i][0].type;
                 thirdColon.push_back(forToken_3);
 
                 for (int r = 2; r < result[i].size(); r++)
                 {
-                    
-                    if(first_Semi)
+
+                    if (first_Semi)
                     {
                         firstColon.push_back(result[i][r]);
-                        
-                        if(result[i][r].character==";"){
+
+                        if (result[i][r].character == ";")
+                        {
                             postfix = infixToPostfix(firstColon);
 
-                            for(int o = 0; o < postfix.size(); o++){
+                            for (int o = 0; o < postfix.size(); o++)
+                            {
                                 k.push_back(postfix[o]);
                             }
                             first_Semi = false;
                             second_Semi = true;
                         }
-                       
                     }
                     else if (second_Semi)
                     {
+                        secondColon.push_back(result[i][r]);
 
+                        if (result[i][r].character == ";")
+                        {
+                            postfix = infixToPostfix(secondColon);
+
+                            for (int o = 0; o < postfix.size(); o++)
+                            {
+                                k.push_back(postfix[o]);
+                            }
+                            second_Semi = false;
+                            third_Semi = true;
+                        }
                     }
-                } 
-                
+                }
+
                 break;
             }
 
