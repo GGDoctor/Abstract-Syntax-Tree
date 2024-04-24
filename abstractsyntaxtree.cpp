@@ -277,6 +277,56 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 break;
             }
 
+            if (result[i][0].character == "for"){
+                vector<Token> postfix;
+                vector<Token>firstColon;
+                vector<Token>secondColon;
+                vector<Token> thirdColon;
+                bool first_Semi = true;
+                bool second_Semi = false;
+
+                Token forToken_1;
+                forToken_1.character="For Expression One";
+                forToken_1.type = result[i][0].type;
+                firstColon.push_back(forToken_1);
+
+                Token forToken_2;
+                forToken_2.character="For Expression Two";
+                forToken_2.type = result[i][0].type;
+                secondColon.push_back(forToken_2);
+
+                Token forToken_3;
+                forToken_3.character="For Expression Three";
+                forToken_3.type = result[i][0].type;
+                thirdColon.push_back(forToken_3);
+
+                for (int r = 2; r < result[i].size(); r++)
+                {
+                    
+                    if(first_Semi)
+                    {
+                        firstColon.push_back(result[i][r]);
+                        
+                        if(result[i][r].character==";"){
+                            postfix = infixToPostfix(firstColon);
+
+                            for(int o = 0; o < postfix.size(); o++){
+                                k.push_back(postfix[o]);
+                            }
+                            first_Semi = false;
+                            second_Semi = true;
+                        }
+                       
+                    }
+                    else if (second_Semi)
+                    {
+
+                    }
+                } 
+                
+                break;
+            }
+
             // just placing this in to start while condition
             if (result[i][0].character == "while")
             {
