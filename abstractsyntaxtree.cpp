@@ -286,17 +286,17 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 bool second_Semi = false;
 
                 Token forToken_1;
-                forToken_1.character="For Expression One";
+                forToken_1.character="For Expression 1";
                 forToken_1.type = result[i][0].type;
                 firstColon.push_back(forToken_1);
 
                 Token forToken_2;
-                forToken_2.character="For Expression Two";
+                forToken_2.character="For Expression 2";
                 forToken_2.type = result[i][0].type;
                 secondColon.push_back(forToken_2);
 
                 Token forToken_3;
-                forToken_3.character="For Expression Three";
+                forToken_3.character="For Expression 3";
                 forToken_3.type = result[i][0].type;
                 thirdColon.push_back(forToken_3);
 
