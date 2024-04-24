@@ -393,15 +393,22 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                 // found function/procedure call in line
                 if (foundFunctionProcedureCall != -1)
                 {
+                    int closingParenIndex = 0;
+                    for (int j = foundFunctionProcedureCall + 2; j < result[i].size() && result[i][j].character != ")"; j++) {
+                        closingParenIndex++;
+                    }
+
+                    /*
                     int numberOfParams = findNumberOfParams(
                         result[i][foundFunctionProcedureCall].character, symbolTable.paramTable);
+                    */
                     // cout << "num params: " << numberOfParams << '\n';
                     token.character = "(";
                     token.type = LEFT_PARENTHESIS;
                     k.insert(k.begin() + foundFunctionProcedureCall + 1, token);
                     token.character = ")";
                     token.type = RIGHT_PARENTHESIS;
-                    k.insert(k.begin() + foundFunctionProcedureCall + 2 + numberOfParams, token);
+                    k.insert(k.begin() + foundFunctionProcedureCall + 2 + closingParenIndex, token);
                 }
 
                 break;
