@@ -160,7 +160,29 @@ private:
                 }
                 operators.pop(); // Pop the '('
             }
+
+            
+            else if (token.character == "[")
+            {
+                while (!operators.empty() && operators.top().character != "[")
+                {
+                    postfix.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.pop(); // Pop the '['
+            }
+             else if (token.character == "]")
+            {
+                while (!operators.empty() && operators.top().character != "]")
+                {
+                    postfix.push_back(operators.top());
+                    operators.pop();
+                }
+                operators.pop(); // Pop the ']'
+            }
+            
         }
+
 
         while (!operators.empty())
         {
