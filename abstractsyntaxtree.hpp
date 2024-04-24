@@ -89,6 +89,7 @@ private:
     {
         vector<Token> postfix;
         stack<Token> operators;
+        stack<char> bracketOrder;
 
         for (const Token &token : infix)
         {
@@ -161,7 +162,6 @@ private:
                 operators.pop(); // Pop the '('
             }
 
-            
             else if (token.character == "[")
             {
                 while (!operators.empty() && operators.top().character != "[")
