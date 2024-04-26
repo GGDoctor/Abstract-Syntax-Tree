@@ -90,9 +90,17 @@ private:
         vector<Token> postfix;
         stack<Token> operators;
         stack<char> bracketOrder;
+        bool isParameters = false;
 
         for (const Token &token : infix)
         {
+
+            if(count(listOfProFuncs.begin(), listOfProFuncs.end(), token.character)){
+                isParameters = true;
+                cout << "found procedure or function " << token.character << endl;
+            }
+
+
             if (token.type == INTEGER || token.type == IDENTIFIER ||
                 token.type == STRING || token.type == SINGLE_QUOTE ||
                 token.type == LEFT_BRACKET || token.type == RIGHT_BRACKET || token.type == DOUBLE_QUOTE)
@@ -148,18 +156,57 @@ private:
                 operators.push(token);
             }
 
-            else if (token.character == "(")
-            {
-                operators.push(token);
-            }
-            else if (token.character == ")")
-            {
-                while (!operators.empty() && operators.top().character != "(")
+            //if(isParameters = false){}
+            // else if (token.character == "(")
+            // {
+            //     operators.push(token);
+            // }
+            // else if (token.character == ")")
+            // {
+            //     while (!operators.empty() && operators.top().character != "(")
+            //     {
+            //         postfix.push_back(operators.top());
+            //         operators.pop();
+            //     }
+            //     operators.pop(); // Pop the '('
+            // }
+
+            //handle parenthesis if not a function/ procedure call
+            else if(isParameters == false){
+                if (token.character == "(")
                 {
-                    postfix.push_back(operators.top());
-                    operators.pop();
+                    operators.push(token);
                 }
-                operators.pop(); // Pop the '('
+                else if (token.character == ")")
+                {
+                    while (!operators.empty() && operators.top().character != "(")
+                    {
+                        postfix.push_back(operators.top());
+                        operators.pop();
+                    }
+                    operators.pop(); // Pop the '('
+                }
+            }
+            else if(isParameters == true){
+                if (token.character == "(")
+                {
+                    cout << "HERE1" << endl;
+                    operators.push(token);
+                }
+                else if (token.character == ")")
+                {
+                    cout << "HERE2" << endl;
+                    while (!operators.empty())
+                    {
+                        cout << "HERE3" << endl;
+                        
+                        postfix.push_back(operators.top());
+                        operators.pop();
+                    }
+                    operators.pop(); // Pop the '('
+                    isParameters = false;
+                }
+                
             }
 
             else if (token.character == "[")
