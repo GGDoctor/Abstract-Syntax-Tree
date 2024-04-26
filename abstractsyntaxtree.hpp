@@ -195,8 +195,9 @@ private:
                 }
                 else if (token.character == ")")
                 {
+                    //To stop Haley from Seg Faulting
                     cout << "HERE2" << endl;
-                    while (!operators.empty())
+                    while (!operators.empty() && operators.top().character!="(")
                     {
                         cout << "HERE3" << endl;
                         
