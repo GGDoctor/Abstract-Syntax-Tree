@@ -188,14 +188,16 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
 
    //vector<Token>listOfProFuncs;
 
+    /*
     for(int line = 0; line < result.size(); line++){
         if(findFunctionProcedureCall(result[line], symbolTable.table) != -1){
             //listOfProFuncs.push_back(result[line][1]);
             //cout << findFunctionProcedureCall(result[line], symbolTable.table) << endl;
             //cout << "Possible name: " << result[line][1].character << " on line " << line << endl;
         }
+    
         
-    }
+    } */
 
 
 
@@ -305,6 +307,35 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                     k.push_back(postfix[r]);
                 }
 
+                int foundFunctionProcedureCall = findFunctionProcedureCall(k, symbolTable.table);
+                // found function/procedure call in line
+                if (foundFunctionProcedureCall != -1)
+                {
+                    /*
+                    int closingParenIndex = 0;
+                    for (int j = foundFunctionProcedureCall + 1; j < result[i].size() && result[i][j].character != ")"; j++) {
+                        closingParenIndex++;
+                        cout << result[i][j].character << " ###\n";
+                    }
+                    
+
+                    cout << "_____ " << closingParenIndex << '\n';
+                    */
+
+                    int numberOfParams = findNumberOfParams(
+                        result[i][foundFunctionProcedureCall].character, symbolTable.paramTable);
+                    
+                    //cout << "num params: " << numberOfParams << '\n';
+                    
+                    token.character = "(";
+                    token.type = LEFT_PARENTHESIS;
+                    k.insert(k.begin() + foundFunctionProcedureCall + 1, token);
+                    token.character = ")";
+                    token.type = RIGHT_PARENTHESIS;
+                    k.insert(k.begin() + foundFunctionProcedureCall + 3 + numberOfParams, token);
+                    
+                }
+
                 break;
             }
 
@@ -409,7 +440,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
                     k.push_back(postfix[r]);
                 }
 
-                int foundFunctionProcedureCall = findFunctionProcedureCall(result[i], symbolTable.table);
+                int foundFunctionProcedureCall = findFunctionProcedureCall(k, symbolTable.table);
                 // found function/procedure call in line
                 if (foundFunctionProcedureCall != -1)
                 {
