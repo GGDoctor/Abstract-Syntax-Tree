@@ -143,7 +143,7 @@ AbstractSyntaxTree::AbstractSyntaxTree(RecursiveDescentParser concreteSyntaxTree
     // cout << cst->token.character << "^^^^^\n";
 
     vector<vector<Token>> result; // 2D vector to hold the tokens by levels
-    queue<pair<LCRS *, int>> q;   // Queue to hold nodes along with their level
+    queue<pair<LCRS *, int>> q ;   // Queue to hold nodes along with their level
     q.push({cst, 0});             // Start with the root at level 0
 
     while (!q.empty())

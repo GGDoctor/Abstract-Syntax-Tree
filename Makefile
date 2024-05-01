@@ -1,5 +1,5 @@
 # Compiler
-CC = g++ -std=c++17
+CC = g++ -std=c++17 -g
 
 # Source files
 SRCS = IgnoreComments.cpp Tokenization.cpp RecursiveDescentParser.cpp symboltable.cpp abstractsyntaxtree.cpp infixtopostfix.cpp main.cpp
