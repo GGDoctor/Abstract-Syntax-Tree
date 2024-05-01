@@ -50,7 +50,7 @@ public:
     friend ostream &operator<<(ostream &os, const AbstractSyntaxTree &obj);
 
 private:
-    LCRS *abstractSyntaxTree;
+    LCRS *abstractSyntaxTree = nullptr;
 
     vector<string>listOfProFuncs;
 
